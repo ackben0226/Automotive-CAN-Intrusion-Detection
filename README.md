@@ -20,8 +20,7 @@ Modern vehicles rely on CAN for ECU communication, but CAN lack built-in securit
 Therefore, a lightweight IDS is critical for real detection and mitigation. 
 
 ## Action
-__Data Preprocessing__
-Raw CAN dataset was parse, cleaned
+__Data Preprocessing:__ Raw CAN dataset was parse, cleaned and scaled or normalized to improve the data quality.
 
 __Feature Engineering__
 
