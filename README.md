@@ -7,5 +7,29 @@ In this project, we apply machine learning and deep learning to implement __ligh
 To achieve this, we developed three models and compared their accuracies. 
 |Model|LSTM|XGBoost|CNN (1D)|
 |-----|:----:|:----:|:----:|
-|__Accuracy__|__91%__|__89%__|__84%__|
+|__Accuracy__|__91.56%__|__89%__|__84%__|
 
+After training the model, the LSTM model achieved the highest performance and maintained __<10ms__ __latency__. This makes it suitable for embedded automotive environments.
+
+### Background
+Modern vehicles rely on CAN for ECU communication, but CAN lack built-in security since they are not encrypted and authenticated. This makes it (CAN) vunerable to attacks such as:
+  - spoofing attacks
+  - replay attacks
+  - injection attack
+
+Therefore, a lightweight IDS is critical for real detection and mitigation. 
+
+## Action
+__Data Preprocessing__
+Raw CAN dataset was parse, cleaned
+
+__Feature Engineering__
+
+To improve intrusion detection on the CAN bus, we created the following features.
+- Time-Based Features
+- Payload-Level Features
+- Bit-Level Features
+- DLC-Based Feature
+- Sliding-Window Sequences (for Deep Learning Models)
+  
+These features help to detect spoofing, replay, flooding, and abnormal message patterns that are not visible from raw data alone.
