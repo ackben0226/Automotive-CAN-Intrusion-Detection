@@ -26,9 +26,15 @@ __Feature Engineering__
 
 To improve intrusion detection on the CAN bus, we created the following features.
 - Time-Based Features
-- Payload-Level Features
+- Payload-Level Features (for XGB)
 - Bit-Level Features
 - DLC-Based Feature
 - Sliding-Window Sequences (for Deep Learning Models)
   
 These features help to detect spoofing, replay, flooding, and abnormal message patterns that are not visible from raw data alone.
+
+## Models Implemented
+- **XGBoost**(engineered features)
+- __1D CNN__(payload pattern extraction)
+- __LSTM__(temporal sequence learning)
+
