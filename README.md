@@ -77,7 +77,7 @@ The best performance of the LSTM model demonstrates the importance of **temporal
 
 All models are sufficiently lightweight for real-time inference on embedded hardware.
 
-## 📁 Project Structure
+## Project Structure
 ```bash
 Automotive-CAN-Intrusion-Detection/
 ├── data/ # Scripts for downloading & preprocessing dataset
@@ -90,3 +90,6 @@ Automotive-CAN-Intrusion-Detection/
 └── README.md
 ```
 
+## References
+- H. Lee et al., "CAN ID Shuffling Technique (CIST): Moving Target Defense for the In-Vehicle Network," 2021.
+- HCR Lab, "Car Hacking Dataset," IEEE Dataport, 2020.
