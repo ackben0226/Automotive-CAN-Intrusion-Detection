@@ -25,9 +25,21 @@ This project uses a curated __Car-Hacking-Dataset__ by the Hacking and Counterme
 - __Attack types:__ DoS, Fuzzy and Impersonation
 - __Format:__ CAN frame data (ID, DLC, DATA[0-7], Timestamp, Load, Flag)
 
+__The dataset for this project is hosted on Download dataset:__ 
+
 ## Action
 __Data Preprocessing__ 
 To improve the data quality, the raw CAN dataset was:
+
+## Installation
+### Prerequisites
+- Python 3.8+
+- pip or conda
+
+### Setup
+```bash
+# Clone repository
+
 - parsed
 - cleaned
 - scaled/normalized
