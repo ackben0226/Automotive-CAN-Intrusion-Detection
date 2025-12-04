@@ -4,10 +4,14 @@ __Intrusion Detection Systems (IDU) using Lightweight Machine Learning and Deep 
 ## Project Overview
 In this project, we apply machine learning and deep learning to implement __lightweight intrusion detection system (IDS)__ for automotive Controller Area Network (CAN) traffic. The idea behind this project is to detect malicious CAN messages in real time on resource-constrained Electronic Control Units (ECUs).
 
-To achieve this, we developed three models and compared their accuracies. 
-|Model|LSTM|XGBoost|CNN (1D)|
-|-----|:----:|:----:|:----:|
-|__Accuracy__|__91.56%__|__89%__|__84%__|
+## Model Performance Summary
+To achieve this, we compared three models and their accuracies are as follow: 
+
+| Model | Accuracy | Latency | Best For |
+| :--- | :---: | :---: | :--- |
+| **LSTM** | **91.56%** | <10 ms | Learning temporal sequences and long-range dependencies |
+| **XGBoost** | __89.24%__ | <5 ms | Tabular data with engineered features |
+| **1D CNN** | __84.00%__ | <10 ms | Extracting local payload patterns |
 
 After training the model, the LSTM model achieved the highest performance and maintained __<10ms__ __latency__. This makes it suitable for embedded automotive environments.
 
@@ -27,10 +31,6 @@ This project uses the public __Car-Hacking-Dataset__ by the Hacking and Counterm
 
 __The dataset for this project is hosted on Download dataset:__ 
 
-## Action
-__Data Preprocessing__ 
-To improve the data quality, the raw CAN dataset was:
-
 ## Installation
 ### Prerequisites
 - Python 3.8+
@@ -47,31 +47,46 @@ git clone https://github.com/ackben0226/Automotive-CAN-Intrusion-Detection.git
 pip install -r requirements.txt
 ```
 
+## Action
+__Data Preprocessing__ 
+To improve the data quality, the raw CAN logs were:
 - parsed
 - cleaned
 - scaled/normalized
+- attack labels were mapped to create a supervised learning problem.
 
 __Feature Engineering__
-
 To improve intrusion detection on the CAN bus, we created the following features.
-- Time-Based Features
-- Payload-Level Features (for XGB)
-- Bit-Level Features
-- DLC-Based Feature
-- Sliding-Window Sequences (for Deep Learning Models)
+- __Time-Based Features:__ Inter-message arrival times, frequency.
+- __Payload-Level Features (for XGB):__ Statistical measures (mean, std) of data bytes.
+- __Bit-Level Features:__ For entropy analysis.
+- __DLC-Based Feature:__ Compliance checks for message length.
+- __Sliding-Window:__ To create sequence for Deep Learning Models-LSTM/CNN.
   
 These features help to detect spoofing, replay, flooding, and abnormal message patterns that are not visible from raw data alone.
 
 ## Models Implemented
-- **XGBoost**(engineered features)
-- __1D CNN__(payload pattern extraction)
-- __LSTM__(temporal sequence learning)
+- **XGBoost**(engineered features): As a strong, interpretable baseline.
+- __1D CNN:__ payload bytes extraction for local spatial patterns.
+- __LSTM:__ temporal sequence learning and models the CAN bus as a time series.
 
-## Result
-__Model Perfomace__
-|Model|Accuracy|Noted|
-|LSTM|__91.56%__|Best for sequencial patterns|
-|XGBoost|__89.24%__|Strong tabular baseline|
-|:---:|:---:|:---:|
+## Result & Discussion
+The best performance of the LSTM model demonstrates the importance of **temporal context** in CAN intrusion detection. It has the ability to remember past message pattern, which is crucial for identifying sophisticated multi-frame attacks like impersonation.
+*   **XGBoost** offered an excellent trade-off between accuracy (89.24%) and very low latency (<5ms), making it a prime candidate for the most resource-limited ECUs.
+*   The **CNN** model was effective at spotting anomalous payload structures but was slightly less accurate than the sequence-aware LSTM.
 
+All models are sufficiently lightweight for real-time inference on embedded hardware.
+
+## 📁 Project Structure
+```bash
+Automotive-CAN-Intrusion-Detection/
+├── data/ # Scripts for downloading & preprocessing dataset
+├── notebooks/ # Jupyter notebooks for EDA and prototyping
+├── src/
+│ ├── features/ # Feature engineering pipelines
+│ ├── models/ # XGBoost, CNN, and LSTM model definitions & training scripts
+│ └── evaluation/ # Scripts for model evaluation & latency testing
+├── requirements.txt
+└── README.md
+```
 
