@@ -20,7 +20,11 @@ Modern vehicles rely on CAN for ECU communication, but CAN lack built-in securit
 Therefore, a lightweight IDS is critical for real detection and mitigation. 
 
 ## Action
-__Data Preprocessing:__ Raw CAN dataset was parse, cleaned and scaled or normalized to improve the data quality.
+__Data Preprocessing__ 
+To improve the data quality, the raw CAN dataset was:
+- parsed
+- cleaned
+- scaled/normalized
 
 __Feature Engineering__
 
@@ -37,4 +41,6 @@ These features help to detect spoofing, replay, flooding, and abnormal message p
 - **XGBoost**(engineered features)
 - __1D CNN__(payload pattern extraction)
 - __LSTM__(temporal sequence learning)
+
+## Result
 
