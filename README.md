@@ -19,6 +19,12 @@ Modern vehicles rely on CAN for ECU communication, but CAN lack built-in securit
 
 Therefore, a lightweight IDS is critical for real detection and mitigation. 
 
+### Dataset
+This project uses a curated __Car-Hacking-Dataset__ by the Hacking and Countermeasure Research Lab (HCRL).
+- __Normal driving data (Attack-free):__ 2,369,397 CAN messages
+- __Attack types:__ DoS, Fuzzy and Impersonation
+- __Format:__ CAN frame data (ID, DLC, DATA[0-7], Timestamp, Load, Flag)
+
 ## Action
 __Data Preprocessing__ 
 To improve the data quality, the raw CAN dataset was:
@@ -43,4 +49,10 @@ These features help to detect spoofing, replay, flooding, and abnormal message p
 - __LSTM__(temporal sequence learning)
 
 ## Result
+__Model Perfomace__
+|Model|Accuracy|Noted|
+|LSTM|__91.56%__|Best for sequencial patterns|
+|XGBoost|__89.24%__|Strong tabular baseline|
+|:---:|:---:|:---:|
+
 
