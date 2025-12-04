@@ -20,7 +20,7 @@ Modern vehicles rely on CAN for ECU communication, but CAN lack built-in securit
 Therefore, a lightweight IDS is critical for real detection and mitigation. 
 
 ### Dataset
-This project uses a curated __Car-Hacking-Dataset__ by the Hacking and Countermeasure Research Lab (HCRL).
+This project uses the public __Car-Hacking-Dataset__ by the Hacking and Countermeasure Research Lab (HCRL). The dataset has the following contents:
 - __Normal driving data (Attack-free):__ 2,369,397 CAN messages
 - __Attack types:__ DoS, Fuzzy and Impersonation
 - __Format:__ CAN frame data (ID, DLC, DATA[0-7], Timestamp, Load, Flag)
