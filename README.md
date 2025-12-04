@@ -39,6 +39,13 @@ To improve the data quality, the raw CAN dataset was:
 ### Setup
 ```bash
 # Clone repository
+git clone https://github.com/ackben0226/Automotive-CAN-Intrusion-Detection.git
+```
+
+### Install required dependencies
+```bash
+pip install -r requirements.txt
+```
 
 - parsed
 - cleaned
