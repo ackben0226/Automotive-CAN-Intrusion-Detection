@@ -1,5 +1,5 @@
 # AI for Cybersecurity in Automotive CAN Networks
-__Intrusion Detection Systems (IDU) using Lightweight Machine Learning and Deep Learning__
+__Intrusion Detection Systems (IDS) using Lightweight Machine Learning and Deep Learning__
 
 ## Project Overview
 In this project, we apply machine learning and deep learning to implement __lightweight intrusion detection system (IDS)__ for automotive Controller Area Network (CAN) traffic. The idea behind this project is to detect malicious CAN messages in real time on resource-constrained Electronic Control Units (ECUs).
@@ -16,7 +16,7 @@ To achieve this, we compared three models and their accuracies are as follow:
 After training the model, the LSTM model achieved the highest performance and maintained __<10ms__ __latency__. This makes it suitable for embedded automotive environments.
 
 ### Background
-Modern vehicles rely on CAN for ECU communication, but CAN lack built-in security since they are not encrypted and authenticated. This makes it (CAN) vunerable to attacks such as:
+Modern vehicles rely on CAN for ECU communication, but CAN lacks built-in security since they are not encrypted and authenticated. This makes it (CAN) vulnerable to attacks such as:
   - spoofing attacks
   - replay attacks
   - injection attack
@@ -40,6 +40,10 @@ __The dataset for this project is hosted on Download dataset:__
 ```bash
 # Clone repository
 git clone https://github.com/ackben0226/Automotive-CAN-Intrusion-Detection.git
+cd Automotive-CAN-Intrusion-Detection
+
+# Create virtual environment
+conda create -n can_env python=3.11 (Anaconda prompt)
 ```
 
 ### Install required dependencies
@@ -49,14 +53,17 @@ pip install -r requirements.txt
 
 ## Action
 __Data Preprocessing__ 
-To improve the data quality, the raw CAN logs were:
-- parsed
-- cleaned
-- scaled/normalized
-- attack labels were mapped to create a supervised learning problem.
+<br/>To improve the data quality and model performance, the raw CAN logs were:
+1. __Parsed & Cleaned__ to:
+   - remove duplicate timestamps
+   - handle missing/corrupted frames
+   - validated DLC (Data Length Code) consistency
+     
+2. __scaled/normalized__ for continuous features
+3. __map labeled__  for the attack, Normal, DoS, Fuzzy, Impersonation, to create a supervised learning problem.
 
 __Feature Engineering__
-To improve intrusion detection on the CAN bus, we created the following features.
+<br/>To improve intrusion detection on the CAN bus, the following features were engineered.
 - __Time-Based Features:__ Inter-message arrival times, frequency.
 - __Payload-Level Features (for XGB):__ Statistical measures (mean, std) of data bytes.
 - __Bit-Level Features:__ For entropy analysis.
@@ -66,9 +73,9 @@ To improve intrusion detection on the CAN bus, we created the following features
 These features help to detect spoofing, replay, flooding, and abnormal message patterns that are not visible from raw data alone.
 
 ## Models Implemented
-- **XGBoost**(engineered features): As a strong, interpretable baseline.
-- __1D CNN:__ payload bytes extraction for local spatial patterns.
-- __LSTM:__ temporal sequence learning and models the CAN bus as a time series.
+- **XGBoost**(engineered features): As a strong, interpretable baseline and efficiently learns non-linear decision boundaries
+- __1D CNN:__ payload bytes extraction for local spatial patterns. It filters detect malicious payload patterns
+- __LSTM:__ temporal sequence learning and models the CAN bus as a time series. LSTM captures patterns and flags deviations.
 
 ## Result & Discussion
 The best performance of the LSTM model demonstrates the importance of **temporal context** in CAN intrusion detection. It has the ability to remember past message pattern, which is crucial for identifying sophisticated multi-frame attacks like impersonation.
