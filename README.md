@@ -10,9 +10,8 @@ This work is a comprehensive comparative analysis between sequence-based deep le
 - Feature engineering (inter-arrival timing, payload entropy) improves detection by 8-12% across all models
 - Real-time deployment feasible on automotive-grade hardware (NXP S32K series, 2MB Flash, 512KB RAM)
 
-
-Background
-Modern vehicles contain 70-100 Electronic Control Units (ECUs) communicating via the Controller Area Network (CAN) protocol, which processes over 2,000 messages per second in typical driving scenarios. However, CAN was designed in 1983 without security mechanisms—messages lack encryption, authentication, or sender verification. This exposes critical vehicle functions (braking, steering, powertrain) to cyber attacks.
+### Background
+Modern vehicles contain 70-100 Electronic Control Units (ECUs) to communicate through the Controller Area Network (CAN) protocol. The CAN transmits and processes over 2000 messages per seconds between all the ECUs in typical driving scenarios. However, CAN lacks security mechanisms—messages such as encryption, authentication, or sender verification. This exposes critical vehicle functions, including braking, steering, powertrain, etc. to cyber attacks.
 
 ## Project Overview
 In this project, we apply machine learning and deep learning to implement __lightweight intrusion detection system (IDS)__ for automotive Controller Area Network (CAN) traffic. The idea behind this project is to detect malicious CAN messages in real time on resource-constrained Electronic Control Units (ECUs).
