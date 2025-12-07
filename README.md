@@ -33,28 +33,30 @@ __Composition:__
 - __Format:__ CAN frames with ID (11/29-bit), DLC (Data Length Code), DATA[0-7], 8-byte payload, timestamp, flags
 - __Collection Environment:__ 2017 Hyundai Sonata, real-world driving conditions
 
+## Dataset Statistics:
+|Attack Types  | Messages | Percentage |
+|:---:|:---:|:---:|
+|Normal Traffic |2,369,397 |51.4% | 
+| DoS  |656,578 | 14.2%| 
+| Fuzzy | 591,989 |12.83% |
+Impersonation | 995,471 |21.57%|
 
-## Project Overview
-In this project, we apply machine learning and deep learning to implement __lightweight intrusion detection system (IDS)__ for automotive Controller Area Network (CAN) traffic. The idea behind this project is to detect malicious CAN messages in real time on resource-constrained Electronic Control Units (ECUs).
 
 ## Model Performance Summary
 To achieve this, we compared three models and their accuracies are as follow: 
 
-| Model | Accuracy | Latency | Best For |
-| :--- | :---: | :---: | :--- |
-| **LSTM** | **91.56%** | <10 ms | Learning temporal sequences and long-range dependencies |
-| **XGBoost** | __89.24%__ | <5 ms | Tabular data with engineered features |
-| **1D CNN** | __84.00%__ | <10 ms | Extracting local payload patterns |
+Model Performance
+Attack Detection Results
+ModelAccuracyF1-ScoreFalse Positive RateInference LatencyModel SizeLSTM91.56%94.2%2.1%8ms2.3MBXGBoost89.24%91.8%3.4%3ms1.1MB1D CNN84.00%86.7%5.2%7ms1.8MB
+
+
+| Model | Accuracy |F1-Score | False Positive Rate|Latency |Model Size |Best For |
+| :--- | :---: | :---: |:--:|:--:|:---|:--: |
+| **LSTM** | **91.56%** | **91.62%**|**2.85%**|<10 ms | 2.3MB| Learning temporal sequences and long-range dependencies |
+| **XGBoost** | __89.24%__ |**89.04%** |**3.67%**|<5 ms| 1.1MB| Tabular data with engineered features |
+| **1D CNN** | __84.00%__ | **82.98%**|**5.9%** |<10 ms|1.8MB | Extracting local payload patterns |
 
 After training the model, the LSTM model achieved the highest performance and maintained __<10ms__ __latency__. This makes it suitable for embedded automotive environments.
-
-### Dataset
-This project uses the public __Car-Hacking-Dataset__ by the Hacking and Countermeasure Research Lab (HCRL). The dataset has the following contents:
-- __Normal driving data (Attack-free):__ 2,369,397 CAN messages
-- __Attack types:__ DoS, Fuzzy and Impersonation
-- __Format:__ CAN frame data (ID, DLC, DATA[0-7], Timestamp, Load, Flag)
-
-__The dataset for this project is hosted on Download dataset:__ 
 
 ## Installation
 ### Prerequisites
