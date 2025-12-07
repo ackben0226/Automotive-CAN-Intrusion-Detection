@@ -1,6 +1,19 @@
 # AI for Cybersecurity in Automotive CAN Networks
 __Intrusion Detection Systems (IDS) using Lightweight Machine Learning and Deep Learning__
 
+## Research Contribution
+This work is a comprehensive comparative analysis between sequence-based deep learning and tree-based machine learning for real-time Controller Area Network (CAN) intrusion detection under automotive-grade latency constraints. We demonstrate that Long Short-Term Memory (LSTM) networks achieve 91.56% accuracy with <10ms inference latency on ARM Cortex-M class processors, outperforming traditional methods while meeting the strict timing requirements of safety-critical automotive systems.
+
+### Key Findings:
+- LSTM models capture temporal attack patterns with 91.62% F1-score and 2.81% false positive rate
+- XGBoost provides optimal accuracy-latency tradeoff (89.24% accuracy, <5ms) for resource-constrained ECUs
+- Feature engineering (inter-arrival timing, payload entropy) improves detection by 8-12% across all models
+- Real-time deployment feasible on automotive-grade hardware (NXP S32K series, 2MB Flash, 512KB RAM)
+
+
+Background
+Modern vehicles contain 70-100 Electronic Control Units (ECUs) communicating via the Controller Area Network (CAN) protocol, which processes over 2,000 messages per second in typical driving scenarios. However, CAN was designed in 1983 without security mechanisms—messages lack encryption, authentication, or sender verification. This exposes critical vehicle functions (braking, steering, powertrain) to cyber attacks.
+
 ## Project Overview
 In this project, we apply machine learning and deep learning to implement __lightweight intrusion detection system (IDS)__ for automotive Controller Area Network (CAN) traffic. The idea behind this project is to detect malicious CAN messages in real time on resource-constrained Electronic Control Units (ECUs).
 
