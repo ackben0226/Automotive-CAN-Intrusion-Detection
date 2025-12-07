@@ -242,6 +242,41 @@ Automotive-CAN-Intrusion-Detection/
 └── LICENSE
 ```
 
+## Limitations & Future Work
+### Limitations
+- Model trained on a single dataset
+  Cross-vehicle evaluation needed (different CAN matrices, ECU configurations)
+2. Cold-Start Problem
+First 50 messages: 34% false positive rate (insufficient context)
+Mitigation: Pre-load typical startup sequences per vehicle model
+
+3. Novel Attack Generalization
+
+Unseen attack patterns: 67% detection accuracy
+Challenge: Limited training data diversity
+Future: Anomaly detection + supervised learning hybrid
+
+3. Timing-Based Attack Evasion
+
+Sophisticated attackers mimicking legitimate timing: 78% detection (vs 98% for crude DoS)
+Requires additional side-channel features (voltage, bus load)
+
+4. Single-Vehicle Training
+
+Model trained on 2017 Hyundai Sonata
+Cross-vehicle evaluation needed (different CAN matrices, ECU configurations)
+
+### Future Research Directions
+- __Federated Learning:__ Aggregate knowledge across vehicle fleets without sharing raw CAN data
+- __Zero-Shot Detection:__ Generative models (VAE, GAN) for detecting never-before-seen attacks
+- **Multi-Modal Fusion:** Combine CAN traffic with sensor data (accelerometer, GPS) for context-aware detection
+- **Adversarial Robustness:** Defense against adaptive attackers aware of IDS model
+- **Hardware Security Module (HSM) Integration:** Cryptographic authentication alongside ML-based detection
+
+## Visual Results
+### Confusion Matrix (LSTM Model)
+
+
 ## References
 - H. Lee et al., "CAN ID Shuffling Technique (CIST): Moving Target Defense for the In-Vehicle Network," 2021.
 - HCR Lab, "Car Hacking Dataset," IEEE Dataport, 2020.
