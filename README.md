@@ -36,19 +36,14 @@ __Composition:__
 ## Dataset Statistics:
 |Attack Types  | Messages | Percentage |
 |:---:|:---:|:---:|
-|Normal Traffic |2,369,397 |51.4% | 
-| DoS  |656,578 | 14.2%| 
-| Fuzzy | 591,989 |12.83% |
-Impersonation | 995,471 |21.57%|
+|__Normal Traffic__ |__2,369,397__ |__51.4%__ | 
+| __DoS__  |__656,578__ | __14.2%__| 
+| __Fuzzy__ | __591,989__ |__12.83%__ |
+|__Impersonation__ | __995,471__ |__21.57%__|
 
 
 ## Model Performance Summary
-To achieve this, we compared three models and their accuracies are as follow: 
-
-Model Performance
-Attack Detection Results
-ModelAccuracyF1-ScoreFalse Positive RateInference LatencyModel SizeLSTM91.56%94.2%2.1%8ms2.3MBXGBoost89.24%91.8%3.4%3ms1.1MB1D CNN84.00%86.7%5.2%7ms1.8MB
-
+__Attack Detection Results__
 
 | Model | Accuracy |F1-Score | False Positive Rate|Latency |Model Size |Best For |
 | :--- | :---: | :---: |:--:|:--:|:---|:--: |
@@ -56,11 +51,123 @@ ModelAccuracyF1-ScoreFalse Positive RateInference LatencyModel SizeLSTM91.56%94.
 | **XGBoost** | __89.24%__ |**89.04%** |**3.67%**|<5 ms| 1.1MB| Tabular data with engineered features |
 | **1D CNN** | __84.00%__ | **82.98%**|**5.9%** |<10 ms|1.8MB | Extracting local payload patterns |
 
-After training the model, the LSTM model achieved the highest performance and maintained __<10ms__ __latency__. This makes it suitable for embedded automotive environments.
+
+__Per-Attack Type Performance (LSTM)__  
+| Class           | Precision | Recall | F1-score | Support |
+|:---------------:|:---------:|:------:|:--------:|:-------:|
+| Normal          | 0.9703    | 0.8884 | 0.9275   | 30000   |
+| DoS             | 0.8473    | 0.8855 | 0.8660   | 29999   |
+| Fuzzy           | 0.8550    | 0.8884 | 0.8714   | 30000   |
+| Impersonation   | 0.9997    | 1.0000 | 0.9999   | 30000   |
+
+
+
+## Methodology
+### Data Preprocessing Pipeline
+__Data Cleaning__
+- Removed 1,247 messages with duplicate timestamps (0.03% of dataset)
+- Validated DLC consistency (flagged 89 corrupted frames)
+- Handled missing payload bytes with forward-fill strategy
+- Normalized continuous features using RobustScaler (resilient to outliers)
+
+__Label Encoding__
+- Multi-class classification: {Normal: 0, DoS: 1, Fuzzy: 2, Impersonation: 3}
+- Stratified train/validation/test split: 70/15/15
+- Balanced sampling for minority classes during training
+
+__Feature Engineering__
+To detect sophisticated attacks invisible in raw CAN data, we engineered domain-specific features:
+- __Temporal Features:__
+- Inter-message arrival time: Detects DoS flooding patterns
+- Message frequency per CAN ID: Identifies abnormal transmission rates
+- Sliding window statistics (mean, std, min, max over 10-frame windows)
+
+__Payload-Level Features:__
+- Byte-wise statistics: mean, standard deviation, range across DATA[0-7]
+- Shannon entropy: Measures payload randomness (high entropy → fuzzing attacks)
+- Hamming distance: Compares consecutive payloads for replay detection
+
+__Structural Features:__
+- DLC compliance checking: Validates expected message lengths per CAN ID
+- CAN ID transition matrix: Models legitimate communication patterns
+- Bit-level analysis: Priority bit manipulation detection
+
+__Sequence Representation:__
+- Sliding window (50 frames) for LSTM/CNN temporal modeling
+- Captures multi-message attack sequences (critical for impersonation detection)
+
+## Model Architectures
+### LSTM (Best Overall Performance)
+```bash
+Input: 10-frame sequences × 27 features
+- LSTM Layer 1: 128 units, return_sequences=True
+- Dropout: 0.3
+- LSTM Layer 2: 64 units, return_sequences=False
+- Dropout: 0.3
+- Dense Layer 1: 128 units, ReLU activation
+- Batch Normalization
+- Dropout: 0.5
+- Dense Layer 2: 64 units, ReLU activation
+- Dropout: 0.4
+- Output: 4 classes, Softmax
+- Total Parameters: 146,728
+```
+### XGBoost (Best Latency-Accuracy Tradeoff)
+```bash
+- max_depth: 8
+- n_estimators: 200
+- learning_rate: 0.1
+- subsample: 0.8
+- colsample_bytree: 0.8
+- Features: 38 engineered features (no sequences)
+```
+### 1D CNN (Payload Pattern Extraction)
+```bash
+Input: 50-frame sequences × 8 payload bytes
+- Conv1D: 64 filters, kernel=3, ReLU
+- MaxPooling1D: pool_size=2
+- Conv1D: 32 filters, kernel=3, ReLU
+- GlobalAveragePooling1D
+- Dense: 64 units, ReLU
+- Output: 4 classes, Softmax
+
+# 1D CNN Architecture
+
+Input: 27 timesteps × 1 channel
+
+# --- Convolutional Feature Extractor ---
+- Conv1D: 64 filters, kernel_size=5, activation=ReLU, padding="same"
+- BatchNormalization
+- Conv1D: 64 filters, kernel_size=5, activation=ReLU, padding="same"
+- BatchNormalization
+- MaxPooling1D: pool_size=2
+- Dropout: 0.3
+
+- Conv1D: 128 filters, kernel_size=3, activation=ReLU, padding="same"
+- BatchNormalization
+- Conv1D: 128 filters, kernel_size=3, activation=ReLU, padding="same"
+- BatchNormalization
+- MaxPooling1D: pool_size=2
+- Dropout: 0.3
+
+- GlobalAveragePooling1D
+- Dense: 128 units, activation=ReLU, L2 regularization=1e-4
+- Dropout: 0.4
+- Dense: 64 units, activation=ReLU, L2 regularization=1e-4
+- Dropout: 0.3
+- Output Layer: Dense, 4 units, activation=Softmax
+
+# Parameter Summary
+Total Parameters: 121,476
+Trainable Parameters: 120,708
+Non-trainable Parameters: 768
+```
+
+
 
 ## Installation
 ### Prerequisites
-- Python 3.8+
+- Python 3.8 and higher
 - pip or conda
 
 ### Setup
@@ -76,34 +183,14 @@ conda create -n can_env python=3.11 (Anaconda prompt)
 ### Install required dependencies
 ```bash
 pip install -r requirements.txt
+
+# Download dataset (automated script)
+python scripts/download_dataset.py --output data/raw/
+
+# Verify installation
+python scripts/verify_setup.py
 ```
-
-## Action
-__Data Preprocessing__ 
-<br/>To improve the data quality and model performance, the raw CAN logs were:
-1. __Parsed & Cleaned__ to:
-   - remove duplicate timestamps
-   - handle missing/corrupted frames
-   - validated DLC (Data Length Code) consistency
-     
-2. __scaled/normalized__ for continuous features
-3. __map labeled__  for the attack, Normal, DoS, Fuzzy, Impersonation, to create a supervised learning problem.
-
-__Feature Engineering__
-<br/>To improve intrusion detection on the CAN bus, the following features were engineered.
-- __Time-Based Features:__ Inter-message arrival times, frequency.
-- __Payload-Level Features (for XGB):__ Statistical measures (mean, std) of data bytes.
-- __Bit-Level Features:__ For entropy analysis.
-- __DLC-Based Feature:__ Compliance checks for message length.
-- __Sliding-Window:__ To create sequence for Deep Learning Models-LSTM/CNN.
   
-These features help to detect spoofing, replay, flooding, and abnormal message patterns that are not visible from raw data alone.
-
-## Models Implemented
-- **XGBoost**(engineered features): As a strong, interpretable baseline and efficiently learns non-linear decision boundaries
-- __1D CNN:__ payload bytes extraction for local spatial patterns. It filters detect malicious payload patterns
-- __LSTM:__ temporal sequence learning and models the CAN bus as a time series. LSTM captures patterns and flags deviations.
-
 ## Result & Discussion
 The best performance of the LSTM model demonstrates the importance of **temporal context** in CAN intrusion detection. It has the ability to remember past message pattern, which is crucial for identifying sophisticated multi-frame attacks like impersonation.
 *   **XGBoost** offered an excellent trade-off between accuracy (89.24%) and very low latency (<5ms), making it a prime candidate for the most resource-limited ECUs.
@@ -114,14 +201,45 @@ All models are sufficiently lightweight for real-time inference on embedded hard
 ## Project Structure
 ```bash
 Automotive-CAN-Intrusion-Detection/
-├── data/ # Scripts for downloading & preprocessing dataset
-├── notebooks/ # Jupyter notebooks for EDA and prototyping
+├── config/                     # Configuration files (YAML)
+│   ├── model_config.yaml
+│   ├── preprocess_config.yaml
+│   └── train_config.yaml
+├── data/                       
+│   ├── raw/                    # Original HCRL dataset
+│   ├── processed/              # Preprocessed features & sequences
+│   └── download_dataset.py     # Automated download script
+├── notebooks/                  
+│   ├── 01_EDA.ipynb           # Exploratory data analysis
+│   ├── 02_Feature_Engineering.ipynb
+│   └── 03_Model_Comparison.ipynb
 ├── src/
-│ ├── features/ # Feature engineering pipelines
-│ ├── models/ # XGBoost, CNN, and LSTM model definitions & training scripts
-│ └── evaluation/ # Scripts for model evaluation & latency testing
+│   ├── preprocessing/          
+│   │   ├── clean_data.py
+│   │   └── preprocess_data.py
+│   ├── features/              
+│   │   ├── temporal_features.py
+│   │   ├── payload_features.py
+│   │   └── sequence_generator.py
+│   ├── models/                
+│   │   ├── lstm.py            # LSTM architecture
+│   │   ├── xgboost_model.py   # XGBoost wrapper
+│   │   ├── cnn.py             # 1D CNN architecture
+│   │   ├── train_lstm.py
+│   │   ├── train_xgboost.py
+│   │   └── train_cnn.py
+│   └── evaluation/            
+│       ├── evaluate.py        # Metrics calculation
+│       ├── benchmark_latency.py
+│       └── visualize_results.py
+├── results/                   
+│   ├── confusion_matrix.png
+│   ├── latency_distribution.png
+│   └── training_curves.png
+├── checkpoints/               # Saved model weights
 ├── requirements.txt
-└── README.md
+├── README.md
+└── LICENSE
 ```
 
 ## References
