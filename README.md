@@ -13,6 +13,27 @@ This work is a comprehensive comparative analysis between sequence-based deep le
 ### Background
 Modern vehicles contain 70-100 Electronic Control Units (ECUs) to communicate through the Controller Area Network (CAN) protocol. The CAN transmits and processes over 2000 messages per seconds between all the ECUs in typical driving scenarios. However, CAN lacks security mechanisms—messages such as encryption, authentication, or sender verification. This exposes critical vehicle functions, including braking, steering, powertrain, etc. to cyber attacks.
 
+__Attack Landscape:__
+- __Spoofing:__ Malicious ECUs impersonate legitimate controllers
+- __Replay:__ Captured legitimate messages retransmitted out of context
+- __Denial-of-Service (DoS):__ High-priority message flooding prevents critical communication
+- __Fuzzing:__ Random data injection to trigger undefined ECU behaviour
+<br/>  
+This, however, demonstrates the urgent need for lightweight, real-time intrusion detection deployable on existing automotive hardware without redesigning CAN infrastructure.
+
+## Dataset
+This project uses the public [Car-Hacking Dataset](https://ocslab.hksecurity.net/Datasets/CAN-intrusion-dataset) by the Hacking and Countermeasure Research Lab (HCRL). 
+__Composition:__
+- __Normal Traffic:__ 2,369,397 CAN messages (attack-free driving scenarios)
+- __Attack Types:__
+  - DoS: 656,578 messages
+  - Fuzzy: 591,989 messages
+  - Impersonation: 995,471 messages
+    
+- __Format:__ CAN frames with ID (11/29-bit), DLC (Data Length Code), DATA[0-7], 8-byte payload, timestamp, flags
+- __Collection Environment:__ 2017 Hyundai Sonata, real-world driving conditions
+
+
 ## Project Overview
 In this project, we apply machine learning and deep learning to implement __lightweight intrusion detection system (IDS)__ for automotive Controller Area Network (CAN) traffic. The idea behind this project is to detect malicious CAN messages in real time on resource-constrained Electronic Control Units (ECUs).
 
@@ -26,14 +47,6 @@ To achieve this, we compared three models and their accuracies are as follow:
 | **1D CNN** | __84.00%__ | <10 ms | Extracting local payload patterns |
 
 After training the model, the LSTM model achieved the highest performance and maintained __<10ms__ __latency__. This makes it suitable for embedded automotive environments.
-
-### Background
-Modern vehicles rely on CAN for ECU communication, but CAN lacks built-in security since they are not encrypted and authenticated. This makes it (CAN) vulnerable to attacks such as:
-  - spoofing attacks
-  - replay attacks
-  - injection attack
-
-Therefore, a lightweight IDS is critical for real detection and mitigation. 
 
 ### Dataset
 This project uses the public __Car-Hacking-Dataset__ by the Hacking and Countermeasure Research Lab (HCRL). The dataset has the following contents:
