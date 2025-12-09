@@ -163,8 +163,6 @@ Trainable Parameters: 120,708
 Non-trainable Parameters: 768
 ```
 
-
-
 ## Installation
 ### Prerequisites
 - Python 3.8 and higher
@@ -244,27 +242,31 @@ Automotive-CAN-Intrusion-Detection/
 
 ## Limitations & Future Work
 ### Limitations
-- Model trained on a single dataset
-  Cross-vehicle evaluation needed (different CAN matrices, ECU configurations)
-2. Cold-Start Problem
-First 50 messages: 34% false positive rate (insufficient context)
-Mitigation: Pre-load typical startup sequences per vehicle model
+- Model trained on a single dataset (2017 Hyundai Sonata) — cross-vehicle evaluation needed.
+- Cold-Start Problem: First 50 messages show 34% false positive rate. Mitigation: Pre-load startup sequences.
+- Novel Attack Generalization: 67% detection on unseen patterns. Future: Hybrid anomaly + supervised.
+- Timing-Based Attack Evasion: 78% detection on sophisticated timing mimics. Requires side-channel features.
 
-3. Novel Attack Generalization
 
-Unseen attack patterns: 67% detection accuracy
-Challenge: Limited training data diversity
-Future: Anomaly detection + supervised learning hybrid
+# Extension to Time-Sensitive Networking (TSN) and Next-Generation Automotive Cybersecurity
 
-3. Timing-Based Attack Evasion
+While this project focuses on the legacy Controller Area Network (CAN) protocol—still predominant in current vehicles—the lightweight machine learning approaches developed here are highly transferable to emerging Time-Sensitive Networking (TSN)-based automotive networks, such as those targeted in the TITAN (Time-sensitive Intelligent Threat-aware Automotive Network) project at the University of Luxembourg's SECAN-Lab.
 
-Sophisticated attackers mimicking legitimate timing: 78% detection (vs 98% for crude DoS)
-Requires additional side-channel features (voltage, bus load)
+### Key Transferable Elements
+- **Temporal Feature Engineering for Timing-Sensitive Threats**: Features like inter-message arrival times, message frequency, and sliding-window statistics effectively detect DoS flooding and replay attacks on CAN. In TSN environments, these can extend to identifying timing violations (e.g., jitter/delay attacks) that disrupt deterministic schedules and guaranteed latency—critical risks in TSN's time-aware shaping (IEEE 802.1Qbv) and synchronization (gPTP/IEEE 802.1AS).
+  
+- **Lightweight Models for Resource-Constrained Deployment**: The LSTM (91.56% accuracy, <10ms inference) and XGBoost (<5ms inference) models are optimized for embedded hardware (e.g., ARM Cortex-M, NXP S32K with limited Flash/RAM). These meet the low-latency requirements for real-time threat detection in TSN gateways or ECUs, enabling edge-based IDS without compromising safety-critical performance.
 
-4. Single-Vehicle Training
+- **Threat Model Alignment**: Detection of spoofing, replay, DoS, and fuzzing directly addresses core automotive risks under ISO/SAE 21434 and UNECE WP.29. In TSN/SDN hybrids, similar attacks could target scheduled streams or reconfiguration flows, violating compliance.
 
-Model trained on 2017 Hyundai Sonata
-Cross-vehicle evaluation needed (different CAN matrices, ECU configurations)
+### Planned Future Extensions (Motivation for PhD Research in TITAN)
+This CAN-focused foundation provides a strong starting point for contributions to AI-enhanced cybersecurity in next-generation networks:
+- Integrate TSN traffic simulation (e.g., using OMNeT++/INET framework) to evaluate models on time-critical streams and automotive-grade testbeds.
+- Explore reinforcement learning (RL) for adaptive responses, such as secure real-time traffic scheduling or flow reconfiguration under detected threats (aligning with TITAN's RL objectives).
+- Enhance robustness against TSN-specific attacks (e.g., synchronization disruptions or reservation tampering) via hybrid supervised/unsupervised learning.
+- Collaborate on industrial evaluations during secondments (e.g., with partners like ATEEL) for compliance testing.
+
+This work demonstrates hands-on expertise in applied ML for automotive IDS and a clear vision for advancing threat-aware systems in TSN environments.
 
 ### Future Research Directions
 - __Federated Learning:__ Aggregate knowledge across vehicle fleets without sharing raw CAN data
