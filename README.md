@@ -248,8 +248,7 @@ Automotive-CAN-Intrusion-Detection/
 - Timing-Based Attack Evasion: 78% detection on sophisticated timing mimics. Requires side-channel features.
 
 
-# Extension to Time-Sensitive Networking (TSN) and Next-Generation Automotive Cybersecurity
-
+## Extension to Time-Sensitive Networking (TSN) and Next-Generation Automotive Cybersecurity
 While this project focuses on the legacy Controller Area Network (CAN) protocol—still predominant in current vehicles—the lightweight machine learning approaches developed here are highly transferable to emerging Time-Sensitive Networking (TSN)-based automotive networks, such as those targeted in the TITAN (Time-sensitive Intelligent Threat-aware Automotive Network) project at the University of Luxembourg's SECAN-Lab.
 
 ### Key Transferable Elements
