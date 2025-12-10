@@ -276,7 +276,12 @@ This work demonstrates hands-on expertise in applied ML for automotive IDS and a
 
 ## Visual Results
 ### Confusion Matrix (LSTM Model)
+![Confusion Matrix](results/confusion_matrix.png)
 
+### Latency Distribution
+![Latency Distribution](results/latency_distribution.png)
+### Training Curves
+![Training Curves](results/training_curves.png)
 
 ## References
 - H. Lee et al., "CAN ID Shuffling Technique (CIST): Moving Target Defense for the In-Vehicle Network," 2021.
