@@ -276,7 +276,8 @@ This work demonstrates hands-on expertise in applied ML for automotive IDS and a
 
 ## Visual Results
 ### Confusion Matrix (LSTM Model)
-![Confusion Matrix](results/confusion_matrix.png)
+![Confusion Matrix](<img width="760" height="590" alt="image" src="https://github.com/user-attachments/assets/b62341b7-0b4b-4360-baa7-6c67dad4a633" />
+)
 
 ### Latency Distribution
 ![Latency Distribution](results/latency_distribution.png)
