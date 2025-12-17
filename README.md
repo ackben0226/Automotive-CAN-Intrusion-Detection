@@ -45,11 +45,11 @@ __Composition:__
 ## Model Performance Summary
 __Attack Detection Results__
 
-| Model | Accuracy |F1-Score | False Positive Rate|Latency |Model Size |Best For |
+| Model | Accuracy |F1-Score | False Positive Rate|Latency |Model Size |
 | :--- | :---: | :---: |:--:|:--:|:---|:--: |
-| **LSTM** | **91.56%** | **91.62%**|**2.85%**|<10 ms | 2.3MB| Learning temporal sequences and long-range dependencies |
-| **XGBoost** | __89.24%__ |**89.04%** |**3.67%**|<5 ms| 1.1MB| Tabular data with engineered features |
-| **1D CNN** | __84.00%__ | **82.98%**|**5.9%** |<10 ms|1.8MB | Extracting local payload patterns |
+| **LSTM** | **91.56%** | **91.62%**|**2.85%**|<10 ms | 2.3MB| 
+| **XGBoost** | __89.24%__ |**89.04%** |**3.67%**|<5 ms| 1.1MB| 
+| **1D CNN** | __84.00%__ | **82.98%**|**5.9%** |<10 ms|1.8MB | 
 
 
 __Per-Attack Type Performance (LSTM)__  
@@ -257,12 +257,13 @@ This work is built on the Controller Area Network (CAN), and remains widely used
 
 - **Threat Model Alignment**:The detected attack classes—spoofing, replay, DoS, and fuzzing—map directly to risks addressed in ISO/SAE 21434 and UNECE WP.29. In TSN or TSN–SDN systems, equivalent attacks can target scheduled streams or control-plane updates, leading to the same safety and compliance failures.
 
-### Planned Future Extensions (Motivation for PhD Research in TITAN)
-This CAN-focused foundation provides a strong starting point for contributions to AI-enhanced cybersecurity in next-generation networks:
-- Integrate TSN traffic simulation (e.g., using OMNeT++/INET framework) to evaluate models on time-critical streams and automotive-grade testbeds.
-- Explore reinforcement learning (RL) for adaptive responses, such as secure real-time traffic scheduling or flow reconfiguration under detected threats (aligning with TITAN's RL objectives).
-- Enhance robustness against TSN-specific attacks (e.g., synchronization disruptions or reservation tampering) via hybrid supervised/unsupervised learning.
-- Collaborate on industrial evaluations during secondments (e.g., with partners like ATEEL) for compliance testing.
+
+### Direction for PhD Research (TITAN Context)
+This CAN-based system provides a practical base for work on TSN security (AI-enhanced cybersecurity):
+- Evaluate the models on TSN traffic using OMNeT++/INET, focusing on time-critical streams rather than aggregate throughput.
+- Study adaptive responses using reinforcement learning, such as adjusting schedules or isolating flows once timing anomalies are detected.
+- Extend detection to TSN-specific failure modes, including clock desynchronization and reservation manipulation, using hybrid supervised/unsupervised methods.
+- Validate results in industrial testbeds during secondments, with emphasis on standards compliance rather than benchmark accuracy.
 
 This work demonstrates hands-on expertise in applied ML for automotive IDS and a clear vision for advancing threat-aware systems in TSN environments.
 
