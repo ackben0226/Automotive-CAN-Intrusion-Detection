@@ -247,16 +247,15 @@ Automotive-CAN-Intrusion-Detection/
 - Novel Attack Generalization: 67% detection on unseen patterns. Future: Hybrid anomaly + supervised.
 - Timing-Based Attack Evasion: 78% detection on sophisticated timing mimics. Requires side-channel features.
 
-
 ## Extension to Time-Sensitive Networking (TSN) and Next-Generation Automotive Cybersecurity
-While this project focuses on the legacy Controller Area Network (CAN) protocol—still predominant in current vehicles—the lightweight machine learning approaches developed here are highly transferable to emerging Time-Sensitive Networking (TSN)-based automotive networks, such as those targeted in the TITAN (Time-sensitive Intelligent Threat-aware Automotive Network) project at the University of Luxembourg's SECAN-Lab.
+This work is built on the Controller Area Network (CAN), and remains widely used in production vehicles. The methods developed, particularly timing-based feature extraction and low-latency models are not tied to CAN only. They can be applied to TSN-based in-vehicle networks, including those studied in the TITAN project at the University of Luxembourg.
 
 ### Key Transferable Elements
-- **Temporal Feature Engineering for Timing-Sensitive Threats**: Features like inter-message arrival times, message frequency, and sliding-window statistics effectively detect DoS flooding and replay attacks on CAN. In TSN environments, these can extend to identifying timing violations (e.g., jitter/delay attacks) that disrupt deterministic schedules and guaranteed latency—critical risks in TSN's time-aware shaping (IEEE 802.1Qbv) and synchronization (gPTP/IEEE 802.1AS).
+- **Timing-based features**: Inter-message gaps, message rates, and sliding-window statistics are effective for detecting DoS and replay attacks on CAN. In TSN, the same signals can expose schedule violations, jitter, or delay manipulation that interfere with time-aware shaping (IEEE 802.1Qbv) and clock synchronization (IEEE 802.1AS).
   
-- **Lightweight Models for Resource-Constrained Deployment**: The LSTM (91.56% accuracy, <10ms inference) and XGBoost (<5ms inference) models are optimized for embedded hardware (e.g., ARM Cortex-M, NXP S32K with limited Flash/RAM). These meet the low-latency requirements for real-time threat detection in TSN gateways or ECUs, enabling edge-based IDS without compromising safety-critical performance.
+- **Low-latency models**: The LSTM (91.6% accuracy, <10 ms inference) and XGBoost (<5 ms inference) models were designed for microcontroller-class hardware (e.g., ARM Cortex-M, NXP S32K). These constraints are comparable to those of TSN gateways and ECUs, where detection must not interfere with real-time control tasks.
 
-- **Threat Model Alignment**: Detection of spoofing, replay, DoS, and fuzzing directly addresses core automotive risks under ISO/SAE 21434 and UNECE WP.29. In TSN/SDN hybrids, similar attacks could target scheduled streams or reconfiguration flows, violating compliance.
+- **Threat Model Alignment**:The detected attack classes—spoofing, replay, DoS, and fuzzing—map directly to risks addressed in ISO/SAE 21434 and UNECE WP.29. In TSN or TSN–SDN systems, equivalent attacks can target scheduled streams or control-plane updates, leading to the same safety and compliance failures.
 
 ### Planned Future Extensions (Motivation for PhD Research in TITAN)
 This CAN-focused foundation provides a strong starting point for contributions to AI-enhanced cybersecurity in next-generation networks:
